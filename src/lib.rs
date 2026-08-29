@@ -133,4 +133,25 @@ mod tests {
             );
         }
     }
+
+    /// 对象乱序键向量（审计⑥ C11）：键的插入顺序不得影响哈希。
+    ///
+    /// serde_json 默认（未开 `preserve_order` feature）用 BTreeMap 存对象键，
+    /// 序列化按字典序输出——即「键序规范化」。这是与冻结仓 reactor `content_hash`
+    /// 共用的口径。若有人为 hash 仓或下游开启 `preserve_order` 导致口径漂移
+    /// （插入序进入哈希字节），本测试变红——这是期望的防护。
+    #[test]
+    fn golden_vector_object_key_order_independent() {
+        // 同一对象，键序（含嵌套）完全不同
+        let a = serde_json::from_str::<serde_json::Value>(r#"{"b":2,"a":1,"c":{"y":1,"x":2}}"#).unwrap();
+        let b = serde_json::from_str::<serde_json::Value>(r#"{"a":1,"c":{"x":2,"y":1},"b":2}"#).unwrap();
+        // 黄金值锁定：d425ed03…b9f648 = 键序规范化后 {"a":1,"b":2,"c":{"x":2,"y":1}} 的 BLAKE3
+        let golden = "d425ed0341fae1c9ddc397da080c716db69264f1f73093a3234bb17a16b9f648";
+        assert_eq!(json_digest(&a), golden);
+        assert_eq!(json_digest(&b), golden, "乱序键必须得到同一哈希");
+        // 数组元素序不参与规范化（数组是有序结构，语义不同）
+        let arr1 = serde_json::from_str::<serde_json::Value>(r#"{"k":[1,2]}"#).unwrap();
+        let arr2 = serde_json::from_str::<serde_json::Value>(r#"{"k":[2,1]}"#).unwrap();
+        assert_ne!(json_digest(&arr1), json_digest(&arr2));
+    }
 }
