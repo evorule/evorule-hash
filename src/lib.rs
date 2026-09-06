@@ -141,8 +141,10 @@ mod tests {
     #[test]
     fn golden_vector_object_key_order_independent() {
         // 同一对象，键序（含嵌套）完全不同
-        let a = serde_json::from_str::<serde_json::Value>(r#"{"b":2,"a":1,"c":{"y":1,"x":2}}"#).unwrap();
-        let b = serde_json::from_str::<serde_json::Value>(r#"{"a":1,"c":{"x":2,"y":1},"b":2}"#).unwrap();
+        let a = serde_json::from_str::<serde_json::Value>(r#"{"b":2,"a":1,"c":{"y":1,"x":2}}"#)
+            .unwrap();
+        let b = serde_json::from_str::<serde_json::Value>(r#"{"a":1,"c":{"x":2,"y":1},"b":2}"#)
+            .unwrap();
         // 黄金值锁定：d425ed03…b9f648 = 键序规范化后 {"a":1,"b":2,"c":{"x":2,"y":1}} 的 BLAKE3
         let golden = "d425ed0341fae1c9ddc397da080c716db69264f1f73093a3234bb17a16b9f648";
         assert_eq!(json_digest(&a), golden);
