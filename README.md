@@ -1,5 +1,7 @@
 # evorule-hash
 
+[![CI](https://github.com/evorule/evorule-hash/actions/workflows/ci.yml/badge.svg)](https://github.com/evorule/evorule-hash/actions/workflows/ci.yml)
+
 EvoRule 治理层规范哈希工具（BLAKE3）。
 
 ## 定位
