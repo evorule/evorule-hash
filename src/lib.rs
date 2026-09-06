@@ -20,9 +20,7 @@
 //! - [`json_digest`]：JSON 内容的 BLAKE3（无前缀 64-hex），镜像 reactor `content_hash`/`fact_hash` 算法
 //! - [`prefixed`]：`blake3:` 自描述前缀包装，供 bundle/entry 存储字段使用
 
-use blake3;
 use serde::Serialize;
-use serde_json;
 
 /// 核心原语：与 `evorule-reactor::hash` 的 BLAKE3 原语逐字节等价。
 ///
