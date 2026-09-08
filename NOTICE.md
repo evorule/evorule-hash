@@ -1,39 +1,62 @@
 <!--
   Copyright 2026 EvoRule Project
-  SPDX-License-Identifier: Apache-2.0
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Affero General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Affero General Public License for more details.
+
+  You should have received a copy of the GNU Affero General Public License
+  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+  SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 
-# EvoRule Hash — 声明
+# EvoRule — 声明
 
 **版权所有 (c) 2026 EvoRule Project**
 
-本 crate（`evorule-hash`）是 EvoRule 生态的一部分，提供治理层规范哈希工具（BLAKE3）。
+本项目包含由 EvoRule Project 开发的软件。
 
-## 协议
+## 协议选择指引
+
+| 你是 | 走哪条路 | 链接 |
+|---|---|---|
+| 个人 / 自由职业者 / 开源项目 | **AGPL**（免费） | [LICENSE](LICENSE) |
+| 年营收 < $10M 企业 / 政府 / 高校 / 非营利 | **FCL**（免费闭源豁免） | [FREE_COMMERCIAL_LICENSE.md](FREE_COMMERCIAL_LICENSE.md) |
+| 愿意开源修改版的任意实体 | **AGPL**（免费） | [LICENSE](LICENSE) |
+| 年营收 ≥ $10M 且不愿开源 | **商业许可**（付费） | [COMMERCIAL_LICENSE.md](COMMERCIAL_LICENSE.md) · <evorulelab@gmail.com> |
+
+> 完整决策指引见 [DUAL_LICENSE.md](DUAL_LICENSE.md)。
+
+## 协议分离
 
 | 资产 | 协议 | 说明 |
 |---|---|---|
-| **代码**（v0.1.3 起） | Apache-2.0 | 详见 [LICENSE](LICENSE) |
-| 代码（v0.1.0–v0.1.2 历史版本） | AGPL-3.0-or-later | 已发布版本不可撤回，历史版本仍适用原许可 |
+| **代码** | AGPL-3.0-or-later | 详见 [LICENSE](LICENSE) |
+| **`core_eval.json`** | **CC0 1.0 公共领域** | EvoRule 宪法（解释器规范）—— 任何人都可以自由实现兼容的 EvoRule 引擎，无需保留版权声明。官方文本：<https://creativecommons.org/publicdomain/zero/1.0/legalcode.txt> ；仓内副本：[LICENSES/core_eval-CC0-1.0.txt](LICENSES/core_eval-CC0-1.0.txt) |
 
-## 独立实现声明
+**协议分离的战略意义**：
 
-本 crate 为**独立编写**，非任何 AGPL 代码（含 `evorule-reactor`）的衍生作品：
-仅通过黄金向量测试镜像 `evorule-reactor::hash` 的**算法语义**
-（`blake3(serde_json 序列化字节)`，无前缀 64-hex），代码表达完全独立。
-算法语义本身不受版权保护；两仓共享的仅为对 `blake3` crate 的标准惯用法调用。
-
-## 定位
-
-治理层（evorule-bundle / evorule-rule / evorule-server）的规范哈希**单一真相源**。
-镜像冻结仓 `evorule-reactor/src/hash.rs` 的字节语义，使各仓产出的哈希可跨仓字节一致，
-并与 reactor 审计链算法连续。不取代冻结仓，仅独立镜像其算法（含黄金向量测试锁死字节级等价）。
+- 代码（copyleft, AGPL-3.0）：保护 EvoRule 当前实现，阻止大厂"白嫖 fork 后卖闭源 SaaS"
+- 宪法（public domain, CC0-1.0）：鼓励广泛采用，任何人都可以基于宪法实现兼容引擎
+- 这把"标准"和"实现"分开，类似 HTTP 规范（W3C 公共）vs Apache HTTP Server（版权）
 
 ## 设计原则
 
-- 确定性：相同输入永远产生相同哈希
-- 单一真相源：治理层各仓共用同一哈希实现，避免口径漂移
-- 零隐藏逻辑：公开 API 即全部能力（digest / json_digest / prefixed）
+EvoRule 的核心设计原则：
+
+- 规则即数据（可读、可审计、可序列化）
+- 自解释引擎（解释器本身也是可被审计的规则）
+- 完全可追溯（每次状态变化留下因果链）
+- 零隐藏逻辑（解释器可读 + 可审计）
+- 不可变状态（基于不可变数据结构）
+- 确定性执行（相同输入 = 永远相同输出）
 
 ## 联系信息
 
