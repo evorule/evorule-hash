@@ -1,5 +1,9 @@
 # evorule-hash
 
+> **仓库角色**：本仓库是 **GitHub 镜像**。权威源（primary repo）在 **Gitee**：[https://gitee.com/evorule/evorule-hash](https://gitee.com/evorule/evorule-hash)。
+> Issue / PR 请提交到 Gitee，GitHub 侧仅供镜像与推广展示。
+
+
 [![CI](https://github.com/evorule/evorule-hash/actions/workflows/ci.yml/badge.svg)](https://github.com/evorule/evorule-hash/actions/workflows/ci.yml)
 
 EvoRule 治理层规范哈希工具（BLAKE3）。
