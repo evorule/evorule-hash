@@ -65,4 +65,4 @@ let s = prefixed(&h);
 
 **AGPL-3.0-or-later**（依据 DEC-2026-001 D-001-09 统一：审计链哈希是 EvoRule 差异化核心组件，统一为 AGPL 以保护商业价值）。本仓采用 EvoRule 双许可架构：闭源使用见 [DUAL_LICENSE.md](DUAL_LICENSE.md) / [FREE_COMMERCIAL_LICENSE.md](FREE_COMMERCIAL_LICENSE.md)（合格实体免费豁免）/ [COMMERCIAL_LICENSE.md](COMMERCIAL_LICENSE.md)（付费）。`core_eval.json` 宪法为 **CC0-1.0**。商业许可咨询：evorulelab@gmail.com。
 
-> 历史说明：v0.1.0–v0.1.2 曾以 AGPL 发布，v0.1.3 短暂以 Apache-2.0 发布；已发布的旧版本仍按原许可，本变更仅对新版本生效，已下载副本不受影响。
+> 历史说明：v0.1.0–v0.1.2 曾以 AGPL 发布，v0.1.3 短暂以 Apache-2.0 发布；自 v0.1.4 起依前述统一裁定**回归 AGPL-3.0-or-later**。已发布的旧版本仍按原许可（crates.io 已发布版本许可不可改），本变更仅对新版本生效，已下载副本不受影响；消费方钉版时注意许可口径。

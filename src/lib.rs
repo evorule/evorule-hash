@@ -1,7 +1,7 @@
-// SPDX-License-Identifier: Apache-2.0
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2026 EvoRule Project
 //
-// 本 crate 自 v0.1.3 起以 Apache-2.0 许可发布；更早版本曾以 AGPL-3.0-or-later 发布。
+// 本 crate 自 v0.1.4 起以 AGPL-3.0-or-later 许可发布；v0.1.3 曾以 Apache-2.0 发布（crates.io 已发布版本许可不可改，消费方钉版时注意许可口径）。
 // 本实现为独立编写，非任何 AGPL 代码的衍生（仅通过黄金向量测试镜像算法语义）。
 //! EvoRule 治理层规范哈希工具（BLAKE3）
 //!

@@ -1,4 +1,4 @@
-<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- SPDX-License-Identifier: AGPL-3.0-or-later -->
 <!-- Copyright (C) 2026 EvoRule Project -->
 
 # 更新日志
@@ -6,6 +6,13 @@
 本文件记录 evorule-hash 的显著变更。格式遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本号遵循[语义化版本](https://semver.org/lang/zh-CN/)。
 
 ## [Unreleased]
+
+## [0.1.4] - 2026-09-22
+
+### 变更
+
+- **许可证回归 AGPL-3.0-or-later**（依生态许可统一裁定：审计链哈希是差异化核心组件，统一为 AGPL 以保护商业价值）。历史轨迹：v0.1.0–v0.1.2 AGPL → v0.1.3 Apache-2.0 → v0.1.4 起回归 AGPL
+- crates.io 上已发布的 v0.1.3（Apache-2.0）许可不可改，消费方钉版时注意许可口径；本版本号承载 AGPL 口径发布
 
 ## [0.1.3] - 2026-08-29
 
