@@ -39,6 +39,7 @@ EvoRule 治理层规范哈希工具（BLAKE3）。
 | 发布队列规则集哈希 | 自定义拼接（publish_service） | 无 | evorule-server `core/workspace` | **旁路待收口**（阶段 2 C1/C3） |
 | 认知审计链（agent 自有） | 自定 canonical_json + 链步 | 无 | agent 认知模块 `src/cognition` | 独立域，公式自声明 |
 | 会话锚 initial_content_hash | TCB JsonValue **Display**（带空格） | 无 | evorule-governance `session.rs` | **口径分叉待修**（阶段 2 C2）——与审计链事实哈希不可互证 |
+| 上下文快照链（evorule-llm-context-inspector） | canonical JSON(skeleton)（BTreeMap 键序、浮点拒收、整数纪律）；skeleton_hash 与 observation 哈希；`content_hash` 例外=原文直哈希（非链验证锚点，可含 provider 原生浮点） | 无 | evorule-llm-context-inspector（`D:\evorule-context-inspector`） | 独立域（2026-10-02 登记，实施文档 v3 决策 4）；链步=复用 reactor `chain_step`，genesis=`"genesis"`；与审计链事实哈希不可互证 |
 
 ### 转换接缝声明
 
