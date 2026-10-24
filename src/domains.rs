@@ -299,12 +299,13 @@ impl Domain for SkillLedger {
 }
 impl Computable for SkillLedger {}
 
-/// 市场资产内容哈希（模板/wasm 分发）：分发文件字节直哈希，存储带 `blake3:` 前缀。
+/// 市场资产内容哈希（模板/wasm 分发）：分发文件字节直哈希，**裸 64-hex 无前缀**
+/// （消费方 `blake3::hash(..).to_string()` 产出裸形态，与 wasm 清单的前缀形态不同）。
 /// 分发完整性校验（下载/装载侧重算比对），与治理哈希不可互证。
 pub struct MarketplaceContent;
 impl Domain for MarketplaceContent {
     const NAME: &'static str = "市场资产内容哈希";
-    const PREFIXED: bool = true;
+    const PREFIXED: bool = false;
 }
 impl Computable for MarketplaceContent {}
 
@@ -420,7 +421,7 @@ mod tests {
         });
         check::<MarketplaceContent>(Row {
             name: "市场资产内容哈希",
-            prefixed: true,
+            prefixed: false,
         });
         check::<WasmIntegrity>(Row {
             name: "wasm 分发完整性链",
