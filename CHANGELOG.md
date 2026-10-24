@@ -16,6 +16,10 @@
 - 值形态纪律代码化：`Domain::PREFIXED` 声明各域存储形态，`from_hex` 严格校验 64-hex 主体与 `blake3:` 前缀纪律（形态错配即拒），`to_stored` 归一域纪律存储形态
 - 注册表对齐测试：逐域断言 `NAME` / `PREFIXED` 与 README 域注册表行逐字一致，防代码与文档双正本漂移
 
+### 修正
+
+- 域形态修正：市场资产内容哈希域的存储形态实为**裸 64-hex 无前缀**（消费方 `blake3::hash(..).to_string()` 产出裸形态），随本版本一并修正域常量、doc、对齐测试与 README 注册表行
+
 ### 兼容性
 
 - 对 v0.1.4 纯 additive：现有 `digest` / `json_digest` / `prefixed` 三原语与全部黄金向量测试零变化；下游 `0.1.4` 依赖 req 不受影响，下游升版随各自自然批次
@@ -67,6 +71,8 @@
 - 黄金向量测试：独立镜像 `evorule-reactor` 哈希算法，用真实 Reactor 快照锁死字节级等价
 - 定位：evorule-bundle / evorule-rule 的单一哈希真相源；`evorule-reactor` 处于 Kani 形式化验证保护下且为冻结仓，本 crate 不取代它，仅独立镜像
 
+[0.2.0]: https://gitee.com/evorule/evorule-hash/compare/v0.1.4...v0.2.0
+[0.1.4]: https://gitee.com/evorule/evorule-hash/compare/v0.1.3...v0.1.4
 [0.1.3]: https://gitee.com/evorule/evorule-hash/compare/v0.1.2...v0.1.3
 [0.1.2]: https://gitee.com/evorule/evorule-hash/compare/v0.1.1...v0.1.2
 [0.1.1]: https://gitee.com/evorule/evorule-hash/compare/v0.1.0...v0.1.1
