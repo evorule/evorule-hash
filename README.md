@@ -33,14 +33,19 @@ EvoRule 治理层规范哈希工具（BLAKE3）。
 
 | 域 | 输入规范 | 前缀 | SSOT 路径 | 现状 |
 |---|---|---|---|---|
-| 审计链事实哈希 | TCB JsonValue 经 serde_json 紧凑序列化 | 无 | `evorule-reactor::hash`（冻结仓） | 基准 |
+| 审计链事实哈希 | TCB JsonValue 经 serde_json 紧凑序列化 | 无 | `evorule-reactor::hash`（冻结仓） | 基准；server 离线重建验证点=evorule-server `src/api/audit_archive.rs`（同公式重算，2026-10-24 复核立档） |
 | 治理资产（bundle/条目指纹） | serde_json canonical 值 | `blake3:` | **本 crate** `json_digest`+`prefixed` | evorule-bundle / evorule-rule 已接入；server bundle API 经 bundle 间接接入 |
 | 凭据（口令/API key/JWT） | PBKDF2-HMAC / SHA-256 | 无 | evorule-rule `src/auth` | 密码学标准做法，禁止与内容哈希字段混用 |
+| 平台 token 库存哈希 | 64-hex 随机 token（512-bit 熵）字节直哈希 blake3 | 无（hex） | evorule-server `src/api/platform_auth.rs` | 凭据域高熵子形态（2026-10-24 登记）：查表哈希非口令慢哈希，**仅限 ≥256-bit 高熵随机 token**，低熵口令禁用本形态 |
 | 发布队列规则集哈希 | 自定义拼接（publish_service） | 无 | evorule-server `core/workspace` | **旁路待收口**（阶段 2 C1/C3） |
 | 认知审计链（agent 自有） | 自定 canonical_json + 链步 | 无 | agent 认知模块 `src/cognition` | 独立域，公式自声明 |
 | 会话锚 initial_content_hash | TCB JsonValue **Display**（带空格） | 无 | evorule-governance `session.rs` | **口径分叉待修**（阶段 2 C2）——与审计链事实哈希不可互证 |
 | 上下文快照链（evorule-llm-context-inspector） | canonical JSON(skeleton)（BTreeMap 键序、浮点拒收、整数纪律）；skeleton_hash 与 observation 哈希；`content_hash` 例外=原文直哈希（非链验证锚点，可含 provider 原生浮点） | 无 | evorule-llm-context-inspector（`D:\evorule-context-inspector`） | 独立域（2026-10-02 登记，实施文档 v3 决策 4）；链步=复用 reactor `chain_step`，genesis=`"genesis"`；与审计链事实哈希不可互证 |
 | skill 注册账本内容哈希（evo-agent skills 装配） | SKILL.md 文件字节直哈希（`digest`） | `blake3:` | evo-agent `src/agent/skill_store.rs` | 独立域（2026-10-03 登记）；审批时刻钉哈希，会话创建重算、失配自动降级；与审计链事实哈希不可互证 |
+| 市场资产内容哈希（模板/wasm 分发） | 分发文件字节直哈希（`blake3::hash(..).to_string()` 即 `blake3:` 前缀形态） | `blake3:` | evorule-server `src/api/marketplace.rs` | 独立域（2026-10-24 登记）：分发完整性校验（下载/装载侧重算比对），与治理哈希不可互证 |
+| wasm 分发完整性链 | `.wasm` 文件字节直哈希（清单 `blake3` 字段；签名链 sig→清单字节→blake3→wasm 一签锚两文件） | `blake3:` | wasm-host `src/integrity.rs` | 独立域（2026-10-24 登记）：与 bundle audit.content_hash 同形态不同域，不可互证 |
+| 规则集版本哈希 | `VERSION_HASH_DOMAIN` 分离常数 + 规则数 + 各「规则序列化串\|来源标签」流式 Hasher | 无（hex） | evorule-server `src/api/hit_stats.rs` | 独立域（2026-10-24 登记）：版本分桶指纹（来源变化换版分桶），非验证锚点 |
+| 测试确定性快照哈希 | 内核/状态 Debug 串直哈希（同构建确定） | 无（hex） | 各仓 tests（physics-services `test_thermal_determinism` 等） | 独立域（2026-10-24 登记）：仅测试自证比对，不入链不入库 |
 
 ### 转换接缝声明
 
