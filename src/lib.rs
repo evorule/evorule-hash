@@ -19,6 +19,12 @@
 //! - 序列化采用 `serde_json::to_vec`：紧凑、确定性，不受 Debug 实现变更影响
 //! - [`json_digest`]：JSON 内容的 BLAKE3（无前缀 64-hex），镜像 reactor `content_hash`/`fact_hash` 算法
 //! - [`prefixed`]：`blake3:` 自描述前缀包装，供 bundle/entry 存储字段使用
+//! - 域类型化收口（v0.2.0 起）：[`domains`] 模块把「哈希域注册表」代码化为封闭域集合，
+//!   不同域的哈希值类型不同、不可互换、不可互证；前缀形态纪律由类型声明并在装载时校验
+
+pub mod domains;
+
+pub use domains::DomainHash;
 
 use serde::Serialize;
 

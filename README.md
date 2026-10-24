@@ -18,8 +18,9 @@ EvoRule 治理层规范哈希工具（BLAKE3）。
 > **注意**: `evorule-reactor` 处于 Kani 形式化验证保护下且为冻结仓，本 crate 不取代它，
 > 仅独立镜像其算法（含黄金向量测试锁死字节级等价）。
 >
-> **当前版本**: v0.1.4。evorule-bundle / evorule-rule / evorule-server 直接依赖本仓
-> （三仓依赖 req 全等，集成测试版本闸校验不低于本版）；server 对 evorule-bundle 另有
+> **当前版本**: v0.2.0（域类型化收口）。evorule-bundle / evorule-rule / evorule-server 直接依赖本仓
+> （三仓依赖 req 全等，集成测试版本闸校验不低于 0.1.4；下游升版随各自自然批次——v0.2.0 对
+> v0.1.4 为纯 additive，原语面字节语义零差异）；server 对 evorule-bundle 另有
 > `[patch.crates-io]` 本地联调通道（gitignored，不进 CI）。
 
 ## API
@@ -30,7 +31,7 @@ EvoRule 治理层规范哈希工具（BLAKE3）。
 
 ## 哈希域注册表
 
-生态内各哈希用途的域登记（2026-08-29 审计⑥后现状）。**不同域的哈希值不可互证**——任何校验逻辑必须与被校验值同域。
+生态内各哈希用途的域登记（2026-08-29 审计⑥后现状；**自 v0.2.0 起代码化正本=`src/domains.rs`**——域为封闭集合（sealed），跨域不可互证由类型系统强制，前缀形态纪律在装载时校验；新增域须代码与下表两处同步）。**不同域的哈希值不可互证**——任何校验逻辑必须与被校验值同域。
 
 | 域 | 输入规范 | 前缀 | SSOT 路径 | 现状 |
 |---|---|---|---|---|
@@ -67,6 +68,25 @@ use evorule_hash::{digest, json_digest, prefixed};
 let h = digest(b"evorule");
 let j = json_digest(&serde_json::json!({"a": 1}));
 let s = prefixed(&h);
+```
+
+### 域类型化（v0.2.0 起）
+
+```rust
+use evorule_hash::domains::{AuditChainFacts, GovernanceAsset};
+use evorule_hash::DomainHash;
+
+// 计算型域：输入规范由本 crate 原语达成
+let g = DomainHash::<GovernanceAsset>::digest(b"bytes");
+g.to_stored();          // "blake3:<hex>"（域纪律存储形态）
+let a = DomainHash::<AuditChainFacts>::from_json(&serde_json::json!({"x": 1}));
+
+// 引用构造：严格校验 64-hex 主体与域前缀纪律，形态错配即拒
+let v = DomainHash::<GovernanceAsset>::from_hex(&g.to_stored())?;
+
+// 跨域不可互证 = 编译期：DomainHash<AuditChainFacts> 与 DomainHash<GovernanceAsset>
+// 是不同类型，没有跨域转换，PartialEq 仅同域成立。
+// 引用型域（凭据/认知链/快照链/流式指纹等公式在别处的域）只有 from_hex 值容器能力。
 ```
 
 ## 许可证
