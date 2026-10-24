@@ -24,9 +24,11 @@ SELF_EXEMPT = {
     os.path.join("scripts", "public_face_scan.py"),
     os.path.join("scripts", "public-face-baseline.txt"),
     os.path.join(".github", "workflows", "public-face.yml"),
+    # 本地私有须知档（.git/info/exclude 排除，永不发布）——os.walk 不认 exclude，显式豁免
+    "AGENTS.local.md",
 }
 
-SKIP_DIRS = {".git", "node_modules", "__pycache__", "target-sc1b", ".obsidian"}
+SKIP_DIRS = {".git", "node_modules", "__pycache__", "target-sc1b", ".obsidian", "plan", ".codegraph"}
 TEXT_EXT = {
     ".md", ".rs", ".py", ".ts", ".tsx", ".js", ".mjs", ".json", ".toml",
     ".yml", ".yaml", ".html", ".htm", ".css", ".txt", ".sh", ".ps1",
