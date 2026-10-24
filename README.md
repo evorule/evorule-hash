@@ -18,8 +18,9 @@ EvoRule 治理层规范哈希工具（BLAKE3）。
 > **注意**: `evorule-reactor` 处于 Kani 形式化验证保护下且为冻结仓，本 crate 不取代它，
 > 仅独立镜像其算法（含黄金向量测试锁死字节级等价）。
 >
-> **当前版本**: v0.1.4。evorule-bundle / evorule-rule 直接依赖本仓；
-> evorule-server 经 bundle 间接消费，并通过 `[patch.crates-io]` 钉到本地源。
+> **当前版本**: v0.1.4。evorule-bundle / evorule-rule / evorule-server 直接依赖本仓
+> （三仓依赖 req 全等，集成测试版本闸校验不低于本版）；server 对 evorule-bundle 另有
+> `[patch.crates-io]` 本地联调通道（gitignored，不进 CI）。
 
 ## API
 
