@@ -43,10 +43,27 @@ pub fn digest(bytes: &[u8]) -> String {
 /// 由于 `serde_json::to_vec` 与 `serde_json::to_string` 产生完全相同的字节，
 /// 且与 `evorule_reactor::hash::content_hash` 经 `tcb_to_serde` 后的序列化字节一致，
 /// 故对同一 `serde_json::Value` 输入，本函数与 reactor `content_hash` **逐字节相等**。
+///
+/// # Panics
+///
+/// `T: Serialize` 约束**不保证** serde_json 接受该值：复合类型 map 键
+/// （元组、`Vec` 等结构化键，serde_json 只接受可转字符串的原始类型键）
+/// 序列化即 `Err`，此时本函数 panic。生态内消费面现用 `serde_json::Value` /
+/// 字符串键结构，不触雷；无法保证输入形态的调用方请改用 fallible 变体
+/// [`try_json_digest`]。
 #[inline]
 pub fn json_digest<T: Serialize>(v: &T) -> String {
-    let bytes = serde_json::to_vec(v).expect("内容必然可序列化");
-    digest(&bytes)
+    try_json_digest(v).expect("serde_json 序列化失败（复合类型 map key 等形态不被 JSON 接受）")
+}
+
+/// [`json_digest`] 的 fallible 变体：序列化失败返回 `Err` 而非 panic。
+///
+/// 适用输入形态不受控的场景（如泛型再导出层）。与 [`json_digest`] 对同一
+/// 可序列化输入产出**完全相同**的哈希字节。
+#[inline]
+pub fn try_json_digest<T: Serialize>(v: &T) -> Result<String, serde_json::Error> {
+    let bytes = serde_json::to_vec(v)?;
+    Ok(digest(&bytes))
 }
 
 /// 存储用自描述前缀包装。
@@ -108,6 +125,33 @@ mod tests {
         let v = serde_json::json!({"z": true, "y": "v"});
         let bytes = serde_json::to_vec(&v).unwrap();
         assert_eq!(json_digest(&v), digest(&bytes));
+    }
+
+    /// panic 边界：复合类型 map key（元组键）序列化被 serde_json 拒收——
+    /// fallible 变体返回 Err，panic 变体按文档 panic；正常输入两变体同值。
+    /// （注：整数等原始类型键会被 serde_json 转字符串后接受，不触发 Err。）
+    #[test]
+    fn try_json_digest_rejects_composite_map_keys() {
+        let bad: std::collections::BTreeMap<(i32, i32), i32> = [((1, 2), 3)].into();
+        assert!(
+            serde_json::to_vec(&bad).is_err(),
+            "前提确认：复合类型键确实不被 serde_json 接受"
+        );
+        assert!(try_json_digest(&bad).is_err());
+
+        let good = serde_json::json!({"k": 1});
+        assert_eq!(
+            try_json_digest(&good).unwrap(),
+            json_digest(&good),
+            "可序列化输入两变体必须同值"
+        );
+    }
+
+    #[test]
+    #[should_panic(expected = "serde_json 序列化失败")]
+    fn json_digest_panics_on_composite_map_keys() {
+        let bad: std::collections::BTreeMap<(i32, i32), i32> = [((1, 2), 3)].into();
+        let _ = json_digest(&bad);
     }
 
     /// **跨仓闸门（核心）**：`evorule-hash` 的 `digest` 必须字节级等于 `blake3::hash(bytes).to_hex()`。
