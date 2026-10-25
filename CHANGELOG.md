@@ -5,13 +5,7 @@
 
 本文件记录 evorule-hash 的显著变更。格式遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本号遵循[语义化版本](https://semver.org/lang/zh-CN/)。
 
-## [Unreleased]
-
-### 修正
-
-- **MSRV 声明修订**：`rust-version` 1.74 → **1.85**——实测 1.74 无法读取本仓 Cargo.lock（v4 格式）、1.78 被依赖的 edition2024 特性挡住、1.85 下全量测试通过，原 1.74 声明为失实承诺；CI 同步新增 MSRV 钉版验证 job（声明失实即红）
-
-## [0.2.0] - 2026-10-24
+## [0.2.0] - 2026-10-25
 
 ### 新增
 
@@ -19,14 +13,16 @@
 - 域能力分层：**计算型域**（8 域，提供 `digest` / `from_json` 入口，输入规范由本 crate 原语达成）与**引用型域**（5 域，公式在别处——凭据慢哈希、独立链步、流式指纹等——仅提供 `from_hex` 值容器）
 - 值形态纪律代码化：`Domain::PREFIXED` 声明各域存储形态，`from_hex` 严格校验 64-hex 主体与 `blake3:` 前缀纪律（形态错配即拒），`to_stored` 归一域纪律存储形态
 - 注册表对齐测试：逐域断言 `NAME` / `PREFIXED` 与 README 域注册表行逐字一致，防代码与文档双正本漂移
+- **`try_json_digest`**：`json_digest` 的 fallible 变体——序列化失败返回 `Err` 而非 panic（复合类型 map 键等 serde_json 不接受的形态）。`json_digest` 补 Panics 文档并转调 fallible 变体，panic 边界由测试锁定
 
 ### 修正
 
 - 域形态修正：市场资产内容哈希域的存储形态实为**裸 64-hex 无前缀**（消费方 `blake3::hash(..).to_string()` 产出裸形态），随本版本一并修正域常量、doc、对齐测试与 README 注册表行
+- **MSRV 声明修订**：`rust-version` 1.74 → **1.85**——实测 1.74 无法读取本仓 Cargo.lock（v4 格式）、1.78 被依赖的 edition2024 特性挡住、1.85 下全量测试通过，原 1.74 声明为失实承诺；CI 同步新增 MSRV 钉版验证 job（声明失实即红）
 
 ### 兼容性
 
-- 对 v0.1.4 纯 additive：现有 `digest` / `json_digest` / `prefixed` 三原语与全部黄金向量测试零变化；下游 `0.1.4` 依赖 req 不受影响，下游升版随各自自然批次
+- 对 v0.1.4 纯 additive：现有 `digest` / `json_digest` / `prefixed` 原语与全部黄金向量测试零变化，新增 `try_json_digest` 与 `domains` 模块均为增量；下游 `0.1.4` 依赖 req 不受影响，下游升版随各自自然批次
 
 ## [0.1.4] - 2026-09-22
 
