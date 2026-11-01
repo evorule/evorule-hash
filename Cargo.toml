@@ -5,8 +5,8 @@ edition = "2021"
 rust-version = "1.85"
 license = "AGPL-3.0-or-later"
 description = "EvoRule 审计链哈希工具（BLAKE3）——治理层规范哈希单一真相源（镜像 evorule-reactor::hash 字节语义）"
-repository = "https://gitee.com/evorule/evorule-hash"
-homepage = "https://gitee.com/evorule/evorule-hash"
+repository = "https://github.com/evorule/evorule-hash"
+homepage = "https://github.com/evorule/evorule-hash"
 readme = "README.md"
 
 [dependencies]

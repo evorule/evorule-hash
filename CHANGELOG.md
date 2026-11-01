@@ -71,9 +71,9 @@
 - 黄金向量测试：独立镜像 `evorule-reactor` 哈希算法，用真实 Reactor 快照锁死字节级等价
 - 定位：evorule-bundle / evorule-rule 的单一哈希真相源；`evorule-reactor` 处于 Kani 形式化验证保护下且为冻结仓，本 crate 不取代它，仅独立镜像
 
-[0.2.0]: https://gitee.com/evorule/evorule-hash/compare/v0.1.4...v0.2.0
-[0.1.4]: https://gitee.com/evorule/evorule-hash/compare/v0.1.3...v0.1.4
-[0.1.3]: https://gitee.com/evorule/evorule-hash/compare/v0.1.2...v0.1.3
-[0.1.2]: https://gitee.com/evorule/evorule-hash/compare/v0.1.1...v0.1.2
-[0.1.1]: https://gitee.com/evorule/evorule-hash/compare/v0.1.0...v0.1.1
-[0.1.0]: https://gitee.com/evorule/evorule-hash/releases/tag/v0.1.0
+[0.2.0]: https://github.com/evorule/evorule-hash/compare/v0.1.4...v0.2.0
+[0.1.4]: https://github.com/evorule/evorule-hash/compare/v0.1.3...v0.1.4
+[0.1.3]: https://github.com/evorule/evorule-hash/compare/v0.1.2...v0.1.3
+[0.1.2]: https://github.com/evorule/evorule-hash/compare/v0.1.1...v0.1.2
+[0.1.1]: https://github.com/evorule/evorule-hash/compare/v0.1.0...v0.1.1
+[0.1.0]: https://github.com/evorule/evorule-hash/releases/tag/v0.1.0
